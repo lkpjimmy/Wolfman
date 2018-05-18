@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="狼人遊戲">
+  <meta name="keywords" content="狼人, Wolfman">
+  <meta name="author" content="Jimmy Leung">
+
+  <title>狼人遊戲</title>
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/animate.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="night-time">
+
+  <!-- LOGIN PAGE -->
+  <div class="flex-container" id="login-page" style="display: none">
+    <div class="flex-item">
+      <h3 id="login-title">輸入你的名字</h3>
+      <input id="login-name" type="text" maxlength="12" />
+      <button id="login-button">Enter</button>
+    </div>
+  </div>
+  <!-- LOGIN PAGE -->
+
+  <!-- ROOM LIST -->
+  <div id="room-list">
+    <h1 id="room-list-title">遊戲房間列表</h1>
+    <button id="room-create-button">創建房間</button>
+
+    <div id="room-create-box" style="display: none;">
+    	<div class="modal-dialog">
+	    	<div class="modal-header">
+          <h2>開新房間</h2>
+		      <button id="room-cancel-button">&times;</button>
+		    </div>
+
+        <div class="modal-body">
+		    	<input type="text" id="room-name" name="room-name" placeholder="房間名稱" size="20" />
+		      <input type="text" id="room-capacity" name="room-capacity" placeholder="房間人數" size="2" />
+        </div>
+
+        <div class="modal-footer">
+		    	<button id="room-confirm-button">創建房間!</button>
+        </div>
+      </div>
+    </div>
+
+    <table id="room-table">
+      <thead>
+        <tr>
+          <td>房間名稱</td>
+          <td>玩家數量</td>
+        </tr>
+      </thead>
+
+      <tbody id="room-items">
+        <tr>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- ROOM LIST -->
+
+  <!-- PLAY AREA -->
+  <div id="play-area" style="display: none">
+    <h1 id="play-start-button">開始遊戲</h1>
+    <button id="girl-button" onmousedown="move()" onmouseup="stopMove()" onmouseout="stopMove()" style="display: none">
+      <div id="girl-bar">
+      </div>
+    </button>
+
+
+    <h1 id="play-title"></h1>
+
+    <div id="play-end-button">&times;</div>
+    <div id="player-container"></div>
+
+    <div id="chatroom">
+      <ul class="message"></ul>
+      <input id="message-input" placeholder="輸入訊息" />
+    </div>
+  </div>
+  <!-- PLAY AREA -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+    // INIT SOCKET CONNECTION
+    var socket = io();
+
+    var localRoomList = [];
+    var localPlayerList = [];
+
+    var isJoinedRoom = false;
+    var gameStarted = false;
+    var turnActioned = false;
+    var isWolfmanTurn = false;
+    var stopMoving = false;
+
+    var girlClickCount = 0;
+    var myPlayerID = -1;
+
+    // OBJECTS
+    var Room = function(name, capacity, numPlayer, isPlaying) {
+      this.name = name;
+      this.capacity = capacity;
+      this.numPlayer = numPlayer;
+      this.isPlaying = isPlaying;
+    }
+
+    var Player = function(name, isAlived, isNextRoundAlived) {
+      this.name = name;
+      this.isAlived = isAlived;
+      this.isNextRoundAlived = isNextRoundAlived;
+    }
+  </script>
+
+  <script src="js/room.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/chatroom.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+
+</html>
